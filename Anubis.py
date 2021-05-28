@@ -327,30 +327,7 @@ class UI(QMainWindow):
         self.setCentralWidget(widget)
         self.show()
         
-    def ExecFn(self):
-        codetxt = text.toPlainText()
-        text2.clear()
 
-        if len(codetxt) > 4 and codetxt[0:4] == 'def ':
-            fnname = codetxt[0:codetxt.find("(")]
-            codetocall = fnname + "("
-            parameters = parameterstext.text().split(';')
-
-            for i in parameters:
-                codetocall += i+',' 
-            codetocall = codetocall[4:len(codetocall) - 1]
-            codetocall += ')'
-
-            output = StringIO()
-            sys.stdout = output
-            exec(codetxt + "\n" + codetocall)
-            text2.append(output.getvalue())
-            sys.stdout = sys.__stdout__
-            output.close()
-            
-        else:
-            text2.append(
-                "function should look like this \ndef HelloWorld():\n\tprint('Hello There')")
     ###########################        Start OF the Functions          ##################
     def Run(self):
         if self.port_flag == 0:
@@ -389,7 +366,30 @@ class UI(QMainWindow):
             with f:
                 data = f.read()
             self.Open_Signal.reading.emit(data)
+    def ExecFn(self):
+        codetxt = text.toPlainText()
+        text2.clear()
 
+        if len(codetxt) > 4 and codetxt[0:4] == 'def ':
+            fnname = codetxt[0:codetxt.find("(")]
+            codetocall = fnname + "("
+            parameters = parameterstext.text().split(';')
+
+            for i in parameters:
+                codetocall += i+',' 
+            codetocall = codetocall[4:len(codetocall) - 1]
+            codetocall += ')'
+
+            output = StringIO()
+            sys.stdout = output
+            exec(codetxt + "\n" + codetocall)
+            text2.append(output.getvalue())
+            sys.stdout = sys.__stdout__
+            output.close()
+            
+        else:
+            text2.append(
+                "function should look like this \ndef HelloWorld():\n\tprint('Hello There')")
 
 #
 #
